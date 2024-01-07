@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}products{% endblock %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Form</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='donationform.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="card wrapper">
+            <h2 class="card-title bg-light text-info p-3">Donation Form</h2>
+            <form action="" method="post" id="donationForm">
+
+                {{ form.hidden_tag() }}
+
+                <!-- Choose a Service Start -->
+                <h4 class="text-info">Choose a service</h4>
+                <div class="input-box">
+                    {% for radio in form.service %}
+                        {{ radio }}
+                        <label for="{{ radio.id }}" class="btn btn-outline-info">{{ radio.label }}</label>
+                    {% endfor %}
+                </div>
+                <!-- Choose a Service End -->
+
+                <!-- Address Start -->
+                <div class="input-group mb-3">
+                    <div class="input-box">
+                        {{ form.address.label }}
+                        {{ form.address(class="form-control") }}
+                    </div>
+                </div>
+                <!-- Address End -->
+
+                <!-- Location Dropdown Start -->
+                <div id="locationDropdown" class="location-dropdown" style="display: none;">
+                    <div class="input-group mb-3">
+                        <div class="input-box">
+                            {{ form.drop_off_location.label }}
+                            {{ form.drop_off_location(class="form-select") }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Location Dropdown End -->
+
+                <!-- Contact Information -->
+                <div class="input-group mb-3">
+                    {{ form.contact_number.label }}
+                    {{ form.contact_number(class="form-control") }}
+                </div>
+                <!-- Contact Information End -->
+
+                <!-- Schedule Date of Dropoff -->
+                <div class="input-group mb-3">
+                    <div class="input-box">
+                        <h4 class="text-info">Schedule Date</h4>
+                        {{ form.schedule_date(class="form-control") }}
+                    </div>
+                </div>
+                <!-- Schedule Date of Dropoff End -->
+
+                <!-- Schedule Time of Dropoff -->
+                <div class="input-group mb-3">
+                    <div class="input-box">
+                        <h4 class="text-info">Schedule Time</h4>
+                        {{ form.schedule_time(class="form-control") }}
+                    </div>
+                </div>
+                <!-- Schedule Time of Dropoff End -->
+
+                <!-- Dynamic Inputs Start -->
+                {{ form.quantity.label }}
+                {{ form.quantity(class="form-select") }}
+                <div id="dynamicInputsContainer" class="mb-3"></div>
+                <!-- Dynamic Inputs End -->
+
+                <!-- Declaration Checkbox Section -->
+                <div class="input-group mb-3">
+                    <div class="input-box">
+                        <h4 class="text-info">Declaration</h4>
+                        <div class="form-check">
+                            {{ form.fragile(class="form-check-input") }}
+                            {{ form.fragile.label }}
+                        </div>
+                        <div class="form-check">
+                            {{ form.packaged(class="form-check-input") }}
+                            {{ form.packaged.label }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Declaration Checkbox Section End -->
+
+                 <!-- Submit and Reset Buttons -->
+                <div class="input-group mb-3">
+                    <div class="input-box">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                    <div class="input-box">
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+                <!-- Submit and Reset Buttons End -->
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+{% endblock %}

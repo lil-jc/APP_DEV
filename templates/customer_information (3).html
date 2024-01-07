@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Customer Information Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="Compiled.css">
+</head>
+    <body background="https://cdn.discordapp.com/attachments/991339062218719282/1001845581142052885/Untitled.jpeg">
+            <!---Order and logo buttons-->
+            <div id="main">
+            <p>
+                <a href="homepage.html"><!---Links to homepage ltr-->
+                    <button id="logopic" type="button">
+                        <img id="logopic" src="https://cdn.discordapp.com/attachments/991339062218719282/1001849372969029682/unknown.png" width="200"/>
+                    </button>
+                </a>
+            </div>
+			</p>
+<form action="KenzieSuccessPage.html" method="get">
+		<h1 align="center">Checkout Form</h1>
+		<h5 align="center"><span style="color:red; font-size:15px">&#42;</span>Required Field</h1>
+		
+			<table align="center">
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="myName"><span style="color:red; font-size:15px">&#42;</span>Name:</label></td>
+					<td><input class="kenzietable" type="text" name="myName" id="myName" required="required" placeholder="E.g. John Smith" ></td>
+				</tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="address"><span style="color:red; font-size:15px">&#42;</span>Address:</label></td>
+					<td><input class="kenzietable" type="text" name="address" id="address" required="required" placeholder="E.g. 123 ABC street"></td>
+				</tr>
+				<tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="PostalCode"><span style="color:red; font-size:15px">&#42;</span>Postal Code:</label></td>
+					<td><input class="kenzietable" type="text" name="PostalCode" id="PostalCode" required="required" placeholder="E.g. 123456" maxlength="6" value="" pattern="[0-9]+" inputmode="numeric"  title="please enter the 6 digits of your postal code" /></td>
+				</tr>
+				<tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="PhoneNumber"><span style="color:red; font-size:15px">&#42;</span>Phone Number:</label></td>
+					<td><input class="kenzietable" type="text" name="PhoneNumber" id="PhoneNumber" required="required" placeholder="E.g. +6591235634" maxlength="11" value="" pattern="\+65[6|8|9]\d{7}" inputmode="numeric" title="please enter the +65 and 8 digits of your valid phone number"></td>
+				</tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="Card type"><span style="color:red; font-size:15px">&#42;</span>Card Type:</label></td>
+					<td>
+						<div class="cc-selector">
+						<input type="radio" name="Card type" id="visa" value="visa" /> 
+						<label class="drinkcard-cc visa" for="visa"></label>
+						<input type="radio" name="Card type" id="mastercard" value="mastercard" />  
+						<label class="drinkcard-cc mastercard"for="mastercard"></label>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="CardNumber"><span style="color:red; font-size:15px">&#42;</span>Card Number:</label></td>
+					<td><input class="kenzietable" type="text" name="CardNumber" id="CardNumber" required="required" placeholder="E.g. 1234567891234567" maxlength="16" value="" pattern="[0-9]+" inputmode="numeric" title="please enter the 16 digits of your card number"></td>
+				</tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="ExpDate"><span style="color:red; font-size:15px">&#42;</span>Expiration Date:</label></td>
+					<td><input class="kenzietable" type="month" name="ExpDate" id="ExpDate" required="required" value="2022-09" min="2022-09" max="2025-12"></td>
+				</tr>
+				<tr>
+					<td align="left"><label style="margin-bottom: 10px; display: block;" for="CVC/CVV"><span style="color:red; font-size:15px">&#42;</span>CVC/CVV:</label></td>
+					<td><input class="kenzietable" type="text" name="CVC/CVV" id="CVC/CVV" required="required" placeholder="E.g. 1234" maxlength="4" value="" pattern="[0-9]+" inputmode="numeric" title="please enter the last 4 digits at the back of your card."></td>
+				</tr>
+				<tr>
+				<td align="left"><label style="margin-bottom: 10px; display: block;" for="PreferedOutlet"><span style="color:red; font-size:15px">&#42;</span>Prefered Outlet:</label></td>
+					<td>
+						<select required="required"> 
+							<option>Ang Mo Kio</option>
+							<option>Bedok</option>
+							<option>Bishan</option>
+							<option>Bukit Batok</option>
+							<option>Bukit Merah</option>
+							<option>Bukit Panjang</option>
+							<option>Choa Chu Kang</option>
+							<option>Clementi</option>
+							<option>Geylang</option>
+							<option>Hougang</option>
+							<option>Jurong East</option>
+							<option>Jurong West</option>
+							<option>Kallang</option>
+							<option>Pasir Ris</option>
+							<option>Punggol</option>
+							<option>Queenstown</option>
+							<option>Sembawang</option>
+							<option>Sengkang</option>
+							<option>Serangoon</option>
+							<option>Tampines</option>
+							<option>Tengah</option>
+							<option>Toa Payoh</option>
+							<option>Woodlands</option>
+							<option>Yishun</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type ="submit" class="KZ_submit" value="Submit" />
+						<input type="reset" class="KZ_submit" value="Reset" />
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a href="homepage.html">Home</a>
+                <a href="Order_Form.html">Order</a>
+                <a href="ContactUsPage.html">Contact Us</a>
+                <a href="Hiring Form.html">Hiring</a>
+				<a href="OutletLocationPage.html">Location</a>
+            </div>
+            <span style="font-size:30px;cursor:pointer;position: fixed; top:0; left:0;" onclick="openNav()">&#9776;</span>
+            <!---side navbar--->
+            <script>
+                function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+                }
+                
+                function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("main").style.marginLeft = "0";
+                }
+            </script>
+	</body>
+</html>
+

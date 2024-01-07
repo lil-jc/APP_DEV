@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}contactus{% endblock %}
+{% block content %}
+<body>
+
+<div>
+  <h2>Contact Us</h2>
+
+  <!-- Unsigned-in Users Form -->
+  <form method="post" action="{{ url_for('contact') }}">
+    {{ unsigned_form.hidden_tag() }}
+    {{ unsigned_form.name.label }} {{ unsigned_form.name(size=20) }}<br>
+    {{ unsigned_form.email.label }} {{ unsigned_form.email(size=20) }}<br>
+    {{ unsigned_form.message.label }} {{ unsigned_form.message(rows=4, cols=20) }}<br>
+    {{ unsigned_form.submit }}
+  </form>
+
+  <!-- Signed-in Users Form -->
+  <form method="post" action="{{ url_for('contact') }}">
+    {{ signed_form.hidden_tag() }}
+    {{ signed_form.message_signed.label }} {{ signed_form.message_signed(rows=4, cols=20) }}<br>
+    {{ signed_form.submit_signed }}
+  </form>
+</div>
+
+</body>
+</html>
+{% endblock %}
+
