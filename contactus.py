@@ -1,19 +1,14 @@
-from flask import Blueprint, render_template, request
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
-from wtforms.validators import InputRequired, Email
+from wtforms import Form, StringField, TextAreaField, validators
+from wtforms.fields import html5 as h5fields
 
-contact_us = Blueprint('contact_us', __name__)
 
-# Form for unsigned-in users
-class UnsignedForm(FlaskForm):
-    name = StringField('Name', validators=[InputRequired()])
-    email = StringField('Email', validators=[InputRequired(), Email()])
-    message = TextAreaField('Message', validators=[InputRequired()])
-    submit = SubmitField('Submit')
+class ContactUsForm(Form):
+    # Define your form fields here
+    uName = StringField('Name', validators=[validators.InputRequired(), validators.Length(min=1, max=150), validators.DataRequired()])
+    Ucontactnumber = h5fields.IntegerField('Phone', validators=[validators.InputRequired()], widget=h5widgets.NumberInput(min-6000000000, max-10000000000))
+    uMessage =TextAreaField('Message', validators=[validators.InputRequired(), validators.length(max=300)]
+    
+    #uMessage = StringField('Name', validators=[validators.InputRequired(), validators.length(max=300)], widget=TextArea())
 
-# Form for signed-in users
-class SignedForm(FlaskForm):
-    message_signed = TextAreaField('Message', validators=[InputRequired()])
-    submit_signed = SubmitField('Submit')
-
+    # Add more fields as needed
+# {{form.uMessage.label}}

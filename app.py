@@ -1,11 +1,21 @@
 import shelve
-from flask import Flask, render_template, request
-from contactus import contact_us, UnsignedForm, SignedForm 
+from flask import Flask, render_template, request, redirect, url_for
 from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators
 from wtforms.fields import EmailField, DateField
+from User import User
+from Forms import CreateUserForm
+from Products import Product
+
+#donationform
+from datetime import datetime
+from wtforms import Form
+from donation import DonationForm
+
+#contactus:
+from contactus import ContactUsForm
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] ='thecodex'
+
 
 @app.route('/')
 def index():
@@ -16,52 +26,107 @@ def index():
 def product():
     return render_template('product_page.html')
 
+
+@app.route('/contactus')
+def contact():
+    return render_template('contactus.html')
+
+
 @app.route('/donation', methods=['GET', 'POST'])
 def donation():
-    return render_template('donation.html')
+    form = DonationForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        service = form.service.data
+        address = form.address.data
+        drop_off_location = form.drop_off_location.data
+        contact_number = form.contact_number.data
+        schedule_date = form.schedule_date.data
+        schedule_time = form.schedule_time.data
+        quantity = form.quantity.data
+        fragile = form.fragile.data
+        packaged = form.packaged.data
+    return render_template('donation.html', form=form)
 
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    form = ContactForm()
 
-    if form.validate_on_submit():
-        # Process the form data here (e.g., send an email)
-        # For simplicity, let's just print the data for now
-        print("Name:", form.name.data)
-        print("Email:", form.email.data)
-        print("Message:", form.message.data)
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    signup = CreateUserForm(request.form) #CreateUserForm is from Forms.py
+    if request.method == 'POST' and signup.validate():
 
-        return redirect(url_for('thank_you'))
+        users_dict = {}
+        db = shelve.open('user', 'c')
 
-    return render_template('contact.html', form=form)
+        try:
+            users_dict = db['Users']
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
 
+        user = User(
+            signup.first_name.data,
+            signup.last_name.data,
+            signup.email.data,
+            signup.password.data
+        )
+
+        users_dict[user.get_user_id()] = user
+        db['Users'] = users_dict
+
+        db.close()
+
+        return redirect(url_for('index'))
+    return render_template('signup.html', form=signup)#form is new variable passed to signup.html 
+
+
+@app.route('/login')
+def login():
+     login = CreateUserForm(request.form)#CreateUserForm is from Forms.py
+     return render_template('login.html', form=login)#form is new variable passed to login.html
 
 @app.route('/thank-you')
 def thank_you():
     return "Thank you for contacting us!"
 
+@app.route('/bean_bag')
+def bean_bag():
+    return render_template('beanbag.html')
 
-@contact_us.route('/contact', methods=['GET', 'POST'])
-def contact():
-    unsigned_form = UnsignedForm()
-    signed_form = SignedForm()
+@app.route('/checkout.html')
+def check_out():
+    return render_template('checkout.html')
+
+
+@app.route('/beanbag', methods=['GET', 'POST'])
+def beanbag():
+    products = Product()
+    cart_items = []
+
+    if request.method == 'POST' or request.method == 'GET':
+        stock = products.get_bean_bag()
+        print ("123")
+        print (stock)
 
     if request.method == 'POST':
-        if unsigned_form.validate_on_submit() and not signed_form.validate_on_submit():
-            # Process unsigned-in user form submission
-            name = unsigned_form.name.data
-            email = unsigned_form.email.data
-            message = unsigned_form.message.data
-            # Handle the form data as needed
-            return f"Unsigned-in user form submitted: Name - {name}, Email - {email}, Message - {message}"
-        elif signed_form.validate_on_submit() and not unsigned_form.validate_on_submit():
-            # Process signed-in user form submission
-            message_signed = signed_form.message_signed.data
-            # Handle the form data as needed
-            return f"Signed-in user form submitted: Message - {message_signed}"
+        product_id = request.form.get('product_id')
+        cart_quantity = int(request.form.get('cart_quantity', 0))
+        
+        print(f"Received: Product ID - {product_id}, Quantity - {cart_quantity}")
 
-    return render_template('contact_us.html', unsigned_form=unsigned_form, signed_form=signed_form)
+        if product_id == 'beanbag':
+            item_exists = any(item['product_id'] == 'beanbag' for item in cart_items)
+
+            if item_exists:
+                for item in cart_items:
+                    if item['product_id'] == 'beanbag':
+                        item['quantity'] += cart_quantity
+            else:
+                cart_item = {'product_id': 'beanbag', 'quantity': cart_quantity}
+                cart_items.append(cart_item)
+                
+            print(f"Updated Cart: {cart_items}")
+
+    return render_template('beanbag.html', products=stock, cart_items=cart_items)
 
 
 if __name__ == '__main__':
