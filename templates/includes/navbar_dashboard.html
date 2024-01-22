@@ -1,0 +1,61 @@
+<!--Navbar-->
+<!--fixed-top, sticky-top class for navbar-->
+<nav class="navbar  navbar-expand-lg navbar-light bg-transparent sticky-top">
+    <div class="container">
+        <!--logo-->
+        <a class="navbar-brand fs-4 " href="/">BeanUP</a>
+        <!--toggle btn (hamburger menu)-->
+        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!--Sidebar-->
+        <div class="sidebar offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+            aria-labelledby="offcanvasNavbarLabel">
+            <!-- sidebar Header -->
+            <div class="offcanvas-header text-black border-bottom">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BeanUP</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <!-- sidebar body -->
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#">Shop now</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#">Environmental Awareness</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#">Contact Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#">Donations</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                            data-bs-toggle="dropdown">Settings</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Create Product</a></li>
+                            <li><a class="dropdown-item" href="#">Retrieve Product</a></li>
+                            <li><a class="dropdown-item" href="/signup">Create User</a></li>
+                            <li><a class="dropdown-item" href="/retrieveUsers">Retrieve User</a></li>
+                            <li><a class="dropdown-item" href="#">Retrieve contact Us</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item mx-2">
+                        {% if session.user_id %}
+                        <a class="nav-link" href="/logout">Logout</a>
+                        {% else %}
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        {% endif %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

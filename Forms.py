@@ -8,6 +8,6 @@ class CreateUserForm(Form):
     email = EmailField('Email', [validators.Email(), validators.DataRequired()])
     password = StringField('Password', [validators.Length(min=8, max=64), validators.DataRequired()])
 
-class RetriveUserForm(Form):
+class RetrieveUserForm(Form):
     email = EmailField('Email', [validators.Email(), validators.DataRequired()])
     password = StringField('Password', [validators.Length(min=8, max=64), validators.DataRequired()])

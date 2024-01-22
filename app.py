@@ -1,56 +1,66 @@
 import shelve
-from flask import Flask, render_template, request, redirect, url_for
-from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators
-from wtforms.fields import EmailField, DateField
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from User import User
-from Forms import CreateUserForm
-from Products import Product
-
-#donationform
-from datetime import datetime
-from wtforms import Form
-from donation import DonationForm
-
-#contactus:
-from contactus import ContactUsForm
+from Forms import CreateUserForm, RetrieveUserForm
 
 app = Flask(__name__)
+app.secret_key = 'my_secret_key'
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
-
+#home page
 @app.route('/')
 def index():
     return render_template("index.html")
 
+#user loader
+@login_manager.user_loader
+def load_user(user_id):
+    users_dict = {}
+    db = shelve.open('user', 'r')
+    users_dict = db.get('Users', {})
+    db.close()
+    
+    return users_dict.get(int(user_id))
 
-@app.route('/product')
-def product():
-    return render_template('product_page.html')
+#login route
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    
+    login_form = RetrieveUserForm(request.form)
+
+    if request.method == 'POST' and login_form.validate():
+        email = login_form.email.data
+        password = login_form.password.data
+
+        users_dict = {}
+        db = shelve.open('user', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        for key in users_dict:
+            user = users_dict[key]
+            if user.check_credentials(email,password):
+                login_user(user)
+                flash('Login successful!', 'success')
+                return redirect(url_for('dashboard'))
+        flash('Invalid email or password. Please try again.', 'danger')
+    
+    return render_template('login.html', form=login_form)
+
+# logout (login required)
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('index'))
 
 
-@app.route('/contactus')
-def contact():
-    return render_template('contactus.html')
-
-
-@app.route('/donation', methods=['GET', 'POST'])
-def donation():
-    form = DonationForm(request.form)
-
-    if request.method == 'POST' and form.validate():
-        service = form.service.data
-        address = form.address.data
-        drop_off_location = form.drop_off_location.data
-        contact_number = form.contact_number.data
-        schedule_date = form.schedule_date.data
-        schedule_time = form.schedule_time.data
-        quantity = form.quantity.data
-        fragile = form.fragile.data
-        packaged = form.packaged.data
-    return render_template('donation.html', form=form)
-
-
-
+#create user page(login required)
 @app.route('/signup', methods=['GET', 'POST'])
+@login_required
 def signup():
     signup = CreateUserForm(request.form) #CreateUserForm is from Forms.py
     if request.method == 'POST' and signup.validate():
@@ -75,58 +85,79 @@ def signup():
 
         db.close()
 
-        return redirect(url_for('index'))
+        return redirect(url_for('retrieve_users'))
     return render_template('signup.html', form=signup)#form is new variable passed to signup.html 
 
 
-@app.route('/login')
-def login():
-     login = CreateUserForm(request.form)#CreateUserForm is from Forms.py
-     return render_template('login.html', form=login)#form is new variable passed to login.html
-
-@app.route('/thank-you')
-def thank_you():
-    return "Thank you for contacting us!"
-
-@app.route('/bean_bag')
-def bean_bag():
-    return render_template('beanbag.html')
-
-@app.route('/checkout.html')
-def check_out():
-    return render_template('checkout.html')
+#dash board (login required)
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('index_dashboard.html')
 
 
-@app.route('/beanbag', methods=['GET', 'POST'])
-def beanbag():
-    products = Product()
-    cart_items = []
+# retrieve user (login required)
+@app.route('/retrieveUsers')
+@login_required
+def retrieve_users():
+    users_dict = {}
+    db = shelve.open('user', 'r')
+    users_dict = db['Users']
+    db.close()
 
-    if request.method == 'POST' or request.method == 'GET':
-        stock = products.get_bean_bag()
-        print ("123")
-        print (stock)
+    users_list = []
+    for key in users_dict:
+        user = users_dict.get(key)
+        users_list.append(user)
 
-    if request.method == 'POST':
-        product_id = request.form.get('product_id')
-        cart_quantity = int(request.form.get('cart_quantity', 0))
-        
-        print(f"Received: Product ID - {product_id}, Quantity - {cart_quantity}")
+    return render_template('retrieveUsers.html', count=len(users_list), users_list=users_list)
 
-        if product_id == 'beanbag':
-            item_exists = any(item['product_id'] == 'beanbag' for item in cart_items)
 
-            if item_exists:
-                for item in cart_items:
-                    if item['product_id'] == 'beanbag':
-                        item['quantity'] += cart_quantity
-            else:
-                cart_item = {'product_id': 'beanbag', 'quantity': cart_quantity}
-                cart_items.append(cart_item)
-                
-            print(f"Updated Cart: {cart_items}")
 
-    return render_template('beanbag.html', products=stock, cart_items=cart_items)
+# delete user (login required)
+@app.route('/deleteUser/<int:id>', methods=['POST'])
+@login_required
+def delete_user(id):
+    users_dict = {}
+    db = shelve.open('user', 'w')
+    users_dict = db['Users']
+    users_dict.pop(id)
+    db['Users'] = users_dict
+    db.close()
+    return redirect(url_for('retrieve_users'))
+
+
+#update user (login required)
+@app.route('/updateUser/<int:id>/', methods=['GET', 'POST'])
+@login_required
+def update_user(id):
+    update_user_form = CreateUserForm(request.form)
+    if request.method == 'POST' and update_user_form.validate():
+        users_dict = {}
+        db = shelve.open('user', 'w')
+        users_dict = db['Users']
+        user = users_dict.get(id)
+        user.set_first_name(update_user_form.first_name.data)
+        user.set_last_name(update_user_form.last_name.data)
+        user.set_email(update_user_form.email.data)
+        user.set_password(update_user_form.password.data)
+
+        db['Users'] = users_dict
+        db.close()
+        return redirect(url_for('retrieve_users'))
+    else:
+        users_dict = {}
+        db = shelve.open('user', 'r')
+        users_dict = db['Users']
+        db.close()
+
+        user = users_dict.get(id)
+        update_user_form.first_name.data = user.get_first_name()
+        update_user_form.last_name.data = user.get_last_name()
+        update_user_form.email.data = user.get_email()
+        update_user_form.password.data = user.get_password()
+        return render_template('updateUser.html', form=update_user_form)
+
 
 
 if __name__ == '__main__':

@@ -1,8 +1,8 @@
 {% extends "base_dashboard.html" %}
-{% block title %}login{% endblock %}
+{% block title %}Update User{% endblock %}
 {% block content %}
 {% from "includes/formhelper.html" import render_field %}
-<h1 class="display-4">Create User</h1>
+<h1 class="display-4">Update User</h1>
 <form method="POST" action="">
     <div class="form-group">
         {{ render_field(form.first_name, class="form-control") }}
@@ -14,14 +14,8 @@
         {{ render_field(form.email, class="form-control") }}
     </div>
     <div class="form-group">
-        {{ render_field(form.password, class="form-control") }}
+        {{ render_field(form.password, class="form-check", style="list-style-type:none") }}
     </div>
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary"/>
-    </div>
-    <div>
-        <p>already a member? </p>
-        <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
-    </div>
+    <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
 {% endblock %}
