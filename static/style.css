@@ -6,8 +6,19 @@ body {
     background-repeat: no-repeat;
 }
 
+.footer {
+    background-color: #343a40; /* You can customize the background color */
+    color: #ffffff; /* You can customize the text color */
+    padding: 20px 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+}
+
 @media (max-width: 991px) {
     .sidebar {
         background-color: #f5f5dc;
     }
 }
+
+
