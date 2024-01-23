@@ -1,4 +1,6 @@
 import shelve
+import openai
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from User import User
@@ -8,6 +10,7 @@ app = Flask(__name__)
 app.secret_key = 'my_secret_key'
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
+
 
 #home page
 @app.route('/')
@@ -157,6 +160,33 @@ def update_user(id):
         update_user_form.email.data = user.get_email()
         update_user_form.password.data = user.get_password()
         return render_template('updateUser.html', form=update_user_form)
+    
+# Initialize the OpenAI API key
+openai.api_key = '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'
+
+# ... (your existing routes)
+
+# Chatbot route
+@app.route('/chatbot', methods=['GET', 'POST'])
+def chatbot():
+    if request.method == 'POST':
+        user_input = request.form.get('user_input')
+
+        # Call the OpenAI API to generate a response using the chat/completions endpoint
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_input},
+            ],
+            max_tokens=150
+        )
+
+        chatbot_response = response['choices'][0]['message']['content'].strip()
+
+        return render_template('chatbot.html', user_input=user_input, chatbot_response=chatbot_response)
+
+    return render_template('chatbot.html')
 
 
 
