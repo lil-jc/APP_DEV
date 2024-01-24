@@ -162,7 +162,7 @@ def update_user(id):
         return render_template('updateUser.html', form=update_user_form)
     
 # Initialize the OpenAI API key
-openai.api_key = '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'
+openai.api_key = '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'
 
 # ... (your existing routes)
 
