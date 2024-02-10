@@ -1,5 +1,6 @@
 import shelve
 import openai
+import threading
 
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
@@ -162,7 +163,7 @@ def update_user(id):
         return render_template('updateUser.html', form=update_user_form)
     
 # Initialize the OpenAI API key
-openai.api_key = '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'
+openai.api_key = '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'
 
 # ... (your existing routes)
 

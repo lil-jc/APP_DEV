@@ -1,6 +1,6 @@
 <!--Navbar-->
 <!--fixed-top, sticky-top class for navbar-->
-<nav class="navbar  navbar-expand-lg navbar-light bg-transparent sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow sticky-top">
     <div class="container">
         <!--logo-->
         <a class="navbar-brand fs-4 " href="/">BeanUP</a>
@@ -22,13 +22,13 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="#">Shop now</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Environmental Awareness</a>
+                        <a class="nav-link" href="#">Awareness</a>
                     </li>
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="#">Contact Us</a>
@@ -48,14 +48,10 @@
                         </ul>
                     </li>
                     <li class="nav-item mx-2">
-                        {% if session.user_id %}
-                        <a class="nav-link" href="/logout">Logout</a>
-                        {% else %}
-                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-                        {% endif %}
+                        <a class="nav-link" href="{{ url_for('index') }}">Logout</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="/checkout">
+                        <a class="nav-link" href="#">
                             <i class="bi bi-bag"></i>
                             <span class="badge bg-danger" id="cart-quantity-badge"></span>
                         </a>

@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Library Loan System - Create User{% endblock %}
+{% block title %}Login{% endblock %}
 {% block content %}
 {% from "includes/formhelper.html" import render_field %}
 
-<h1 class="display-4">Create User</h1>
+<h1 class="display-4">Login</h1>
 <form method="POST" action="">
     <div class="form-group">
         {{ render_field(form.email, class="form-control") }}
@@ -20,6 +20,7 @@
     </div>
 </form>
 <p>&nbsp; </p>
+<div><p>&nbsp; </p>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
@@ -51,6 +52,5 @@
     <p>&nbsp; </p>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
+    <p>&nbsp; </p></div>
 {% endblock %}

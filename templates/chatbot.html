@@ -1,8 +1,12 @@
 {% extends "base.html" %}
-{% block title %} Chatbot | BeanUp Eco furniture {% endblock %}
+{% block title %} Chatbot | BeanUp Eco Furniture {% endblock %}
 
 {% block content %}
-<div class="container">
+<a href="{{ url_for('index') }}" class="position-fixed top-50 translate-middle-y end-0 p-3 bg-primary text-white rounded-circle">
+    <img src="{{ url_for('static', filename='chat_icon.jpg') }}" style="height: 50px; width: 50px; border-radius: 50%;" alt="chatbot">
+</a>
+
+<div class="container mt-5">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
@@ -25,29 +29,93 @@
         </div>
     </div>
 </div>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
-<p>&nbsp; </p>
+<div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</div>
+<div class="container mt-5">
+    <h2>Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    What makes furniture eco-friendly?
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Eco-friendly furniture helps reduce deforestation, conserves natural resources, and minimizes carbon emissions. Additionally, many eco-friendly materials are non-toxic and safer for indoor environments, promoting better health for you and your family.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Does eco-friendly furniture compromise on style or quality?
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Not at all! Eco-friendly furniture can be just as stylish and durable as conventional furniture. In fact, many designers are incorporating sustainable practices into their designs, resulting in unique and high-quality pieces that are both aesthetically pleasing and environmentally conscious.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Can I donate my old furniture when purchasing new eco-friendly pieces?
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Absolutely! Many furniture retailers offer donation or recycling programs to help customers responsibly dispose of their old furniture. Donating furniture extends its lifecycle and reduces waste going to landfills, contributing to a more sustainable future.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Are there any specific care instructions for eco-friendly furniture?
+                </button>
+            </h2>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    While care instructions may vary depending on the materials used, eco-friendly furniture generally requires similar care to conventional furniture. Regular cleaning and maintenance will help preserve its beauty and functionality for years to come.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingFive">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    Is eco-friendly furniture more expensive than conventional furniture?
+                </button>
+            </h2>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    While initial costs may sometimes be slightly higher due to the use of sustainable materials and ethical manufacturing practices, eco-friendly furniture often offers long-term cost savings. Its durability and longevity can result in fewer replacements over time, ultimately saving you money in the long run.
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingSix">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                    Can eco-friendly furniture be customized to fit my specific needs?
+                </button>
+            </h2>
+            <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Many eco-friendly furniture manufacturers offer customization options to accommodate your preferences and space requirements. From choosing sustainable materials to selecting designs and finishes, you can often tailor eco-friendly furniture to suit your individual style and needs.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</div>
 {% endblock %}
