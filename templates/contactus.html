@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Contact Us{% endblock %}
+
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Add the CSS styles here -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .custom-container {
+            width: 60%;
+            padding: 90px 45px 45px; /* Added 90px padding to the top */
+            border-radius: 0;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .row {
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+        }
+
+        .col-md-7 {
+            padding: 20px;
+        }
+
+        .col-md-5 {
+            background: #f7e7ce;
+            padding: 20px;
+            color: #000000; /* Set text color to black */
+        }
+
+        .form-control {
+            height: 52px;
+            background: #fff;
+            color: #000;
+            font-size: 14px;
+            border-radius: 2px;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .bi {
+            font-size: 20px;
+        }
+
+        .d-flex p {
+            font-size: 18px;
+            padding-left: 10px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+                position: absolute;
+                left: 50%;
+                top: 90%;
+            }
+        }
+    </style>
+<div class="custom-container">
+    <div class="row">
+        <div class="col-md-7">
+            <h4>Contact Us</h4>
+            <form method="POST" action="{{ form.formspree_endpoint.data }}">
+<div class="mb-3">
+    {{ render_field(form.name, class="form-control") }}
+</div>
+<div class="mb-3">
+    {{ render_field(form.email, class="form-control") }}
+</div>
+<div class="mb-3">
+    <div id="prof">
+        <div class="form-group">
+            {{ render_field(form.message, class="form-control") }}
+        </div>
+    </div>
+</div>
+                    <input type="hidden" name="_subject" value="New Contact Form Submission">
+
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-5 ">
+            <h4>Other ways to reach us</h4>
+            <hr>
+            <div class="mt-4">
+                <div class="d-flex">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <p >Address: Bean Up</p>
+                </div>
+                <hr>
+                <div class="d-flex">
+                    <i class="bi bi-telephone-fill"></i>
+                    <p>Contact :- 98217713</p>
+                </div>
+                <hr>
+                <div class="d-flex">
+                    <i class="bi bi-envelope-fill"></i>
+                    <p>Email:- BeanUpInc@gmail.com</p>
+                </div>
+                <hr>
+                <div class="d-flex">
+                    <i class="bi bi-browser-chrome"></i>
+                    <p>Website: www.contactus.com</p>
+                </div>
+                <div id="map" style="height: 200px;"></div>
+
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+</div>
+      <script>
+    // Initialize the map
+    var map = L.map('map').setView([1.2956, 103.8590], 15); // Replace with Suntec City coordinates
+
+    // Add the OpenStreetMap layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add a marker for Suntec City
+    L.marker([1.2956, 103.8590]).addTo(map)
+        .bindPopup('BeanUP, Singapore')
+        .openPopup();
+</script>
+
+{% endblock %}
+

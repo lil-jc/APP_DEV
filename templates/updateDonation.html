@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Update Donation{% endblock %}
+
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+
+<style>
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+    }
+
+    body {
+        padding: 1em;
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 15px;
+        color: #000000;
+        background-color: #FAF9F6;
+    }
+
+    h1 {
+        color: #f0a500;
+    }
+
+    .custom-container {
+        max-width: 38em;
+        padding: 1em 3em 2em 3em;
+        margin: 0em auto;
+        background-color: #fff;
+        border-radius: 4.2px;
+        box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    .row {
+        zoom: 1;
+    }
+
+    .row:before,
+    .row:after {
+        content: "";
+        display: table;
+    }
+
+    .row:after {
+        clear: both;
+    }
+
+    .col-md-7 {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .mb-3 {
+        margin-bottom: 1em;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 1em;
+        line-height: 1.4;
+        background-color: #f9f9f9;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+        transition: all 0.35s ease-in-out;
+    }
+
+    .btn-primary {
+        background-color: #64ac15;
+        color: #fff;
+        padding: 1em;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.35s ease-in-out;
+    }
+
+    .btn-primary:hover {
+        background-color: #4a8c12;
+    }
+
+    /* Style for Reset Button */
+    .btn-secondary {
+        background-color: #ff0000;
+        color: #fff;
+        padding: 1em;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.35s ease-in-out;
+    }
+
+    .btn-secondary:hover {
+        background-color: #cc0000;
+    }
+</style>
+
+<div class="custom-container">
+    <h1 class="display-4">Update Donation</h1>
+
+    <form method="POST" action="">
+        <div class="mb-3">
+            {{ render_field(form.name, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.email, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.number, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.service, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.address, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.scheduledate, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.scheduletime, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.furnituretype, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.quantity, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.fragile, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            {{ render_field(form.packaged, class="form-control") }}
+        </div>
+        <div class="mb-3">
+            <div class="form-group">
+                {{ render_field(form.message, class="form-control") }}
+            </div>
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </form>
+</div>
+{% endblock %}

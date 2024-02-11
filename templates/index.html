@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends base_template %}
 {% block title %} BeanUp Eco furniture{% endblock %}
 
 {% block content %}
@@ -16,11 +16,9 @@
         <a href="#" class="btn btn-primary btn-lg mt-3">Shop Now</a>
     </div>
 </div>
-<div>
-    <p>&nbsp;</p>
-</div>
+
 <!-- More about us -->
-<h2 class="more-about-us">More About Us</h2>
+<h2 class="more-about-us">More about us</h2>
 
 <!-- Text content -->
 <div class="container">
@@ -28,9 +26,23 @@
         <div class="col-md-6">
             <p class="lead">Welcome to BeanUp Eco Furniture, where sustainability meets style. Our mission is to provide you with high-quality furniture that not only enhances your living space but also helps protect the environment. Each piece in our collection is crafted using eco-friendly materials and processes, ensuring minimal impact on the planet.</p>
             <p class="lead">From sleek modern designs to timeless classics, we offer a wide range of furniture options to suit every taste and preference. Whether you're furnishing your home, office, or outdoor space, you can trust BeanUp Eco Furniture to deliver exceptional quality and eco-consciousness.</p>
-            <p class="lead">Join us in making a positive impact on the world. Shop our collection today and choose to be eco-friendly!</p>
+            <div>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+
+            </div>
+            <img src="{{ url_for('static', filename='making.jpg') }}" alt="Image 789" class="img-fluid mb-3">
         </div>
         <div class="col-md-6">
+            <img src="{{ url_for('static', filename='recycle.jpg') }}" alt="Image 123" class="img-fluid mb-3">
+            <div>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+            </div>
+            <p class="lead">Join us in making a positive impact on the world. Shop our collection today and choose to be eco-friendly!</p>
             <p class="lead">At BeanUp Eco Furniture, sustainability isn't just a buzzword; it's our guiding principle. We're committed to reducing our carbon footprint and promoting ethical manufacturing practices. By choosing our eco-friendly furniture, you're not only investing in your home but also in a greener future for generations to come.</p>
             <p class="lead">In addition to our commitment to sustainability, we also prioritize customer satisfaction. Our dedicated team is here to assist you every step of the way, from selecting the perfect piece for your space to ensuring a seamless delivery process. Experience the difference with BeanUp Eco Furniture.</p>
             <p class="lead">Ready to transform your space with sustainable style? Explore our collection today and take the first step towards a more eco-conscious lifestyle.</p>
@@ -43,6 +55,7 @@
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
+
 </div>
 
 {% endblock %}

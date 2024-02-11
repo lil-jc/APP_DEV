@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Library Loan System - Retrieve Donations{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Retrieve Donations</h1>
+<div>
+  {% if count == 0 %}
+  <p>There are no donations.</p>
+  {% elif count == 1 %}
+  <p>There is 1 donation.</p>
+  {% else %}
+  <p>There are {{ count }} donations.</p>
+  {% endif %}
+</div>
+<div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Form ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Number</th>
+        <th>Service</th>
+        <th>Address</th>
+        <th>Schedule Date</th>
+          <th>Schedule Time</th>
+          <th>Furniture Type</th>
+        <th>Quantity of Furniture</th>
+        <th>Fragile</th>
+        <th>Packaged</th>
+          <th>Remarks</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for donation in donations_list %}
+     <tr>
+        <td>{{ donation.get_user_id() }}</td>
+        <td>{{ donation.get_name() }}</td>
+        <td>{{ donation.get_email() }}</td>
+         <td>{{ donation.get_number() }}</td>
+        <td>{{ donation.get_service() }}</td>
+         <td>{{ donation.get_address() }}</td>
+        <td>{{ donation.get_scheduledate() }}</td>
+        <td>{{ donation.get_scheduletime() }}</td>
+         <td>{{ donation.get_furnituretype() }}</td>
+        <td>{{ donation.get_quantity() }}</td>
+        <td>{{ donation.get_fragile() }}</td>
+        <td>{{ donation.get_packaged() }}</td>
+         <td>{{ donation.get_message() }}</td>
+
+        <td><a href="/updateDonation/{{donation.get_user_id()}}" class="btn btn-warning">Update</a></td>
+        <td>
+          <form action="{{url_for('delete_donation', id=donation.get_user_id())}}" method="POST">
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{donation.get_user_id()}}">
+              Delete
+            </button>
+
+            <!-- The Modal -->
+            <div class="modal" id="myModal_{{donation.get_user_id()}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    Are you sure you want to delete {{donation.get_name()}} {{donation.get_email()}}?
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </form>
+        </td>
+     </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
