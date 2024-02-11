@@ -3,54 +3,45 @@
 {% block content %}
 {% from "includes/formhelper.html" import render_field %}
 
-<h1 class="display-4">Login</h1>
-<form method="POST" action="">
-    <div class="form-group">
-        {{ render_field(form.email, class="form-control") }}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title text-center">Login</h1>
+                <form method="POST" action="">
+                    <div class="form-group">
+                        {{ render_field(form.email, class="form-control") }}
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        {{ render_field(form.password, class="form-control") }}
+                    </div>
+                    <div>
+                        <p>&nbsp; </p>
+                        <p>&nbsp; </p>
+                    </div>
+                    <div class="form-group d-flex justify-content-center">
+                        <input type="submit" value="  Login  " class="btn btn-primary"/>
+                    </div>
+                </form>
+                <div>
+                    <p>&nbsp; </p>
+                    <p>&nbsp; </p>
+                    <p>&nbsp; </p>
+                    <p>&nbsp; </p>
+                </div>
+                <div>
+                    <p class="card-text">Notice: Login function is only for admin staff. Do not attempt to bypass this page. Unauthorized access is prohibited and constitutes an offence under the Computer Misuse Act 1990.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        {{ render_field(form.password, class="form-control") }}
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Submit" class="btn btn-primary"/>
-    </div>
-    <div>
-        <p>not a member? </p>
-        <a href="{{ url_for('signup') }}" class="btn btn-primary">Sign-up</a>
-    </div>
-</form>
-<p>&nbsp; </p>
-<div><p>&nbsp; </p>
+</div>
+<div>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
     <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p>
-    <p>&nbsp; </p></div>
+</div>
+
 {% endblock %}

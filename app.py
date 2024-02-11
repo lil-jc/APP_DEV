@@ -168,7 +168,7 @@ def update_user(id):
         return render_template('updateUser.html', form=update_user_form)
     
 # Initialize the OpenAI API key
-openai.api_key = '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'
+openai.api_key = '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'
 
 # Chatbot route
 @app.route('/chatbot', methods=['GET', 'POST'])
@@ -204,9 +204,10 @@ def chatbot():
 #----------------------------------------------------------------------------------------------------
 @app.route('/contactUs', methods=['GET', 'POST'])
 def create_Message():
+    base_template = 'base_dashboard.html' if current_user.is_authenticated else 'base.html'
     create_message_form = CreateMessageForm(request.form)
     create_message_form.formspree_endpoint.data = "https://formspree.io/f/xoqgjbnd"
-    return render_template('contactus.html', form=create_message_form)
+    return render_template('contactus.html', form=create_message_form, base_template=base_template)
 
 
 
@@ -216,6 +217,7 @@ def create_Message():
 
 @app.route('/donation', methods=['GET', 'POST'])
 def create_donation():
+    base_template = 'base_dashboard.html' if current_user.is_authenticated else 'base.html'
     create_donation_form = CreateDonationForm(request.form)
     if request.method == 'POST' and create_donation_form.validate():
         donations_dict = {}
@@ -248,10 +250,12 @@ def create_donation():
 
 
         return redirect(url_for('retrieve_donations'))
-    return render_template('donationform.html', form=create_donation_form)
+    return render_template('donationform.html', form=create_donation_form, base_template=base_template)
 
 @app.route('/retrieve_donations')
+@login_required
 def retrieve_donations():
+    base_template = 'base_dashboard.html' if current_user.is_authenticated else 'base.html'
     donations_dict = {}
     with shelve.open('donations.db', 'r') as db:
         try:
@@ -260,11 +264,13 @@ def retrieve_donations():
             print("Error in retrieving Donations from donations.db.")
 
     donations_list = list(donations_dict.values())
-    return render_template('retrieveDonation.html', count=len(donations_list), donations_list=donations_list)
+    return render_template('retrieveDonation.html', count=len(donations_list), donations_list=donations_list, base_template=base_template)
 
 
 @app.route('/updateDonation/<int:id>/', methods=['GET', 'POST'])
+@login_required
 def update_donation(id):
+    base_template = 'base_dashboard.html' if current_user.is_authenticated else 'base.html'
     update_donation_form = CreateDonationForm(request.form)
     if request.method == 'POST' and update_donation_form.validate():
         donations_dict = {}
@@ -284,14 +290,6 @@ def update_donation(id):
         donations.set_packaged(update_donation_form.packaged.data)
         donations.set_address(update_donation_form.address.data)
         donations.set_number(update_donation_form.number.data)
-
-
-
-
-
-
-
-
 
         db['Donations'] = donations_dict
         db.close()
@@ -317,17 +315,11 @@ def update_donation(id):
         update_donation_form.address.data = donations.get_address()
         update_donation_form.number.data = donations.get_number()
 
-
-
-
-
-
-
-
-        return render_template('updateDonation.html', form=update_donation_form)
+        return render_template('updateDonation.html', form=update_donation_form, base_template=base_template)
 
 
 @app.route('/deleteDonation/<int:id>', methods=['POST'])
+@login_required
 def delete_donation(id):
     donations_dict = {}
     db = shelve.open('donations.db', 'w')
@@ -349,7 +341,7 @@ def delete_donation(id):
     return redirect(url_for('retrieve_donations'))
 
 #----------------------------------------------------------------------------------------------------
-#section for Jacob part ends here
+#section for Kenzie part ends here
 
 if __name__ == '__main__':
     app.run(debug=True)

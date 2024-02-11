@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends base_template %}
 {% block title %}Library Loan System - Donation Form{% endblock %}
 
 {% block content %}
@@ -94,6 +94,11 @@
         background-color: #cc0000; /* Darker red on hover for the reset button */
     }
 </style>
+<!--chatbot-->
+<a href="{{ url_for('chatbot') }}" class="position-fixed top-50 translate-middle-y end-0 p-3 bg-primary text-white rounded-circle" style="z-index: 9999;">
+    <img src="{{ url_for('static', filename='chat_icon.jpg') }}" style="height: 50px; width: 50px; border-radius: 50%;" alt="chatbot">
+</a>
+
 <div>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
