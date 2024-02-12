@@ -1,0 +1,13 @@
+/* checkout.css */
+
+/* Style the submit button */
+#checkoutbutton {
+  background-color: #ffffff; /* Set background color to white */
+  color: #000000; /* Set text color to black */
+  border: 1px solid #000000; /* Add a 2px solid black border */
+}
+
+/* Add some margin to the top of the checkout button */
+.btn-primary.btn-lg.btn-block {
+  margin-top: 10px;
+}

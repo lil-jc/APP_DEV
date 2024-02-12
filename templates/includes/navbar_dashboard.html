@@ -25,7 +25,7 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">Shop now</a>
+                        <a class="nav-link" href="/shopnow">Shop now</a>
                     </li>
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="#">Awareness</a>
@@ -40,8 +40,8 @@
                         <a class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown">Settings</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Create Product</a></li>
-                            <li><a class="dropdown-item" href="#">Retrieve Product</a></li>
+                            <li><a class="dropdown-item" href="/createProduct">Create Product</a></li>
+                            <li><a class="dropdown-item" href="/retrieveProduct">Retrieve Product</a></li>
                             <li><a class="dropdown-item" href="/signup">Create User</a></li>
                             <li><a class="dropdown-item" href="/retrieveUsers">Retrieve User</a></li>
                             <li><a class="dropdown-item" href="/retrieve_donations">Retrieve Donation</a></li>
@@ -51,7 +51,7 @@
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="/checkout">
                             <i class="bi bi-bag"></i>
                             <span class="badge bg-danger" id="cart-quantity-badge"></span>
                         </a>
@@ -61,3 +61,31 @@
         </div>
     </div>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    updateCartQuantity();
+
+    // Add an event listener for form submissions
+    document.addEventListener('submit', function (event) {
+      if (event.target.classList.contains('add-to-cart-form')) {
+        // Delay the update to ensure the form data is sent
+        setTimeout(updateCartQuantity, 500);
+      }
+    });
+
+    function updateCartQuantity() {
+      // Make an AJAX request to get the current cart quantity
+      fetch('/get_cart_quantity')
+        .then(response => response.json())
+        .then(data => {
+          const cartQuantity = data.quantity;
+
+          // Update the bag icon with the new quantity
+          const cartQuantityBadge = document.getElementById('cart-quantity-badge');
+          cartQuantityBadge.textContent = cartQuantity > 0 ? cartQuantity : '';
+        })
+        .catch(error => console.error('Error fetching cart quantity:', error));
+    }
+  });
+</script>

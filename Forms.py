@@ -1,6 +1,6 @@
-from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators, TimeField, HiddenField
+from wtforms import Form, StringField, RadioField, SelectField, TextAreaField, validators, TimeField, HiddenField, FileField, SubmitField
 from wtforms.fields import EmailField, DateField
-from wtforms.validators import DataRequired,Length
+from wtforms.validators import DataRequired,Length, Email
 
 #jacob part start
 class CreateUserForm(Form):
@@ -37,3 +37,24 @@ class CreateDonationForm(Form):
     number = StringField('Phone Number(in the format of 0000 0000)', validators=[DataRequired(message="Phone number is required"),Length(min=9, max=9, message="Please enter a valid 9-digit phone number")])
     address = StringField('Address', [validators.Length(min=1, max=150), validators.DataRequired()])
 #end kenzie part
+
+
+#eujon part start
+class CreateProductForm(Form):
+    name = StringField('Name', [validators.Length(min=1, max=150), validators.DataRequired()])
+    price = StringField('Price', [validators.Length(min=1, max=150), validators.DataRequired()])
+    colour = SelectField('Colour', [validators.DataRequired()], choices=[('', 'Select'), ('Green', 'Green'), ('Blue', 'Blue'), ('Red', 'Red'), ('Brown', 'Brown'), ('Gray', 'Gray'), ('Black', 'Black'), ('Beige', 'Beige')], default='')
+    description = TextAreaField('Product Description', [validators.DataRequired()])
+    image = FileField('Image')
+
+
+class PaymentForm(Form):
+    name = StringField('Name', validators=[DataRequired(message="Name is required")])
+    address = StringField('Address', validators=[DataRequired(message="Address is required")])
+    email = StringField('Email', validators=[DataRequired(message="Email is required"), Email(message="Invalid email address")])
+    phone = StringField('Phone Number(in the format of 0000 0000)', validators=[DataRequired(message="Phone number is required"), Length(min=9, max=9, message="Please enter a valid 9-digit phone number")])
+    card_number = StringField('Card Number(in the format of 0000 0000 0000 0000)', validators=[DataRequired(message="Card number is required"), Length(min=19, max=19, message="Please enter a valid 16-digit card number")])
+    card_expiry = StringField('Expiration Date(in the format of 00/00)', validators=[DataRequired(message="Expiration date is required"), Length(min=5, max=5, message="Please enter a valid expiration date in the format MM/YY")])
+    cvv = StringField('CVV(in the format of 000)', validators=[DataRequired(message="CVV is required"), Length(min=3, max=3, message="Please enter a valid 3-digit CVV")])
+    submit = SubmitField('Submit Payment')   
+#end eujon part

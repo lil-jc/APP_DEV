@@ -1,0 +1,35 @@
+/* confirmation.css */
+
+.container {
+    margin-top: 50px;
+}
+
+.card{
+     margin-bottom: 20px; /* Add margin at the bottom */
+}
+
+.card-header {
+    background-color: #28a745;
+    color: #fff;
+    border: 1px solid #000000
+}
+
+.card-body {
+    padding: 20px;
+    border: 1px solid #000000
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Add your custom styling for the "Go back to home page" link */
+#homelink a{
+  color: #fff; /* Text color */
+  background-color: #28a745;
+  padding: 10px 20px; /* Padding */
+  text-decoration: none; /* Remove underline */
+  border-radius: 5px; /* Rounded corners */
+  display: inline-block; /* Make it a block-level element */
+}

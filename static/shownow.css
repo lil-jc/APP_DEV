@@ -1,0 +1,44 @@
+/* shopnow.css */
+
+.card {
+    width: 18rem; /* Adjust the card width as needed */
+    margin-bottom: 20px; /* Add margin between cards */
+}
+
+.card-img-top {
+    width: 100%; /* Make sure the image fills the entire card width */
+    height: 150px; /* Set a fixed height for the image */
+    object-fit: cover; /* Ensure the image covers the entire container */
+}
+
+.add-to-cart-form {
+    margin-top: 10px; /* Add space between card body and the form */
+}
+
+.quantity-dropdown {
+    margin-right: 5px; /* Add space between quantity dropdown and the submit button */
+}
+
+/* Add any additional styling as needed */
+/* static/shopnow.css */
+
+.card-text.price{
+    color: gray;
+}
+
+.card-text.colour{
+    color: gray;
+}
+/* static/shopnow.css */
+
+.add-to-cart-form input[type="submit"] {
+    background-color: white;
+    color: black;
+    border: 1px solid black; /* Add a border for better visibility */
+    padding: 5px 10px; /* Adjust padding as needed */
+    cursor: pointer;
+}
+
+.add-to-cart-form input[type="submit"]:hover {
+    background-color: #eee; /* Change background color on hover */
+}

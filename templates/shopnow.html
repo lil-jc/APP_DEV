@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Shop Now{% endblock %}
+
+{% block content %}
+  <h1 class="display-4">Shop Now</h1>
+
+  {% if products_list %}
+    <div class="row">
+      {% for product in products_list %}
+        <div class="col-md-4 mb-4">
+          <div class="card h-100 border border-dark">
+            <img src="{{ url_for('static', filename=product.get_image()) }}" class="card-img-top" alt="{{ product.get_name() }} Image" width="300" height="300">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.get_name() }}</h5>
+              <p class="card-text">{{ product.get_description() }}</p>
+              <p class="card-text" ><strong>Price:</strong> <span style="color: gray;">{{ product.get_price() }}</span></p>
+              <p class="card-text"><strong>Colour:</strong> <span style="color: gray;">{{ product.get_colour() }}</span></p>
+              <form action="{{ url_for('add_to_cart', id=product.get_product_id()) }}" method="POST" class="add-to-cart-form">
+                <label>Quantity:</label>
+                <select name="quantity" class="quantity-dropdown" style="width: 110px; /* Adjust width as needed */">
+                  {% for i in range(1, 6) %}
+                    <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
+                </select>
+                <input type="submit" value="Add to Cart" style="background-color: white; color: black; border: 1px solid black; padding: 5px 10px; cursor: pointer;">
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No products available.</p>
+  {% endif %}
+
+{% endblock %}

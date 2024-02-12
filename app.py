@@ -1,11 +1,18 @@
 import shelve
 import openai
 
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from User import User
 from Forms import CreateUserForm, RetrieveUserForm, CreateMessageForm, CreateDonationForm #add missing field to Forms.py 
 from Donation import Donation #make Donation.py
+from werkzeug.utils import secure_filename
+from Forms import CreateProductForm, PaymentForm
+import shelve
+from Product import Product
+from Order import Order
+import os
+from flask_wtf.file import file_allowed, FileAllowed
 
 #this is jacobs part
 #under this section has no errors
@@ -343,6 +350,371 @@ def delete_donation(id):
 #----------------------------------------------------------------------------------------------------
 #section for Kenzie part ends here
 
+
+#this is jacobs part
+#under this section has no errors
+#section starts here
+#----------------------------------------------------------------------------------------------------
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'uploads')
+
+# Set allowed file types
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Ensure the upload folder exists
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+
+
+@app.route('/createProduct', methods=['GET', 'POST'])
+def create_product():
+    create_product_form = CreateProductForm(request.form)
+    if request.method == 'POST' and create_product_form.validate():
+        products_dict = {}
+        db = shelve.open('product.db', 'c')
+
+        try:
+            products_dict = db['Products']
+        except KeyError:
+            print("Error in retrieving Products from products.db.")
+
+
+        product = Product(
+            create_product_form.name.data,
+            create_product_form.price.data,
+            create_product_form.colour.data,
+            create_product_form.description.data,
+            create_product_form.image.data)
+
+        products_dict[product.get_product_id()] = product
+        db['Products'] = products_dict
+
+        count = get_product_count()
+        db[Product.count_id_key] = count
+        db.close()
+
+        return redirect(url_for('retrieve_products'))
+    return render_template('createProduct.html', form=create_product_form)
+
+
+
+@app.route('/retrieveProduct')
+def retrieve_products():
+    products_dict = get_products_dict()
+    product_count = get_product_count()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
+
+    return render_template('retrieveProducts.html', count=product_count, products_list=products_list)
+
+@app.route('/updateProduct/<int:id>/', methods=['GET', 'POST'])
+def update_product(id):
+    update_product_form = CreateProductForm(request.form)
+
+    if request.method == 'POST' and update_product_form.validate():
+        products_dict = {}
+        db = shelve.open('product.db', 'w')
+        products_dict = db['Products']
+
+        product = products_dict.get(id)
+        if product:
+            product.set_name(update_product_form.name.data)
+            product.set_price(update_product_form.price.data)
+            product.set_colour(update_product_form.colour.data)
+            product.set_description(update_product_form.description.data)
+
+            # Check if 'image' is present in the form and update accordingly
+            if update_product_form.image.data:
+                # Validate the file extension
+                if not FileAllowed(update_product_form.image.data, ['jpg', 'png']):
+                    flash('Invalid file type. Please use jpg or png.')
+                    db.close()
+                    return redirect(url_for('update_product', id=id))
+
+                # Save the new image file
+                image_filename = secure_filename(update_product_form.image.data.filename)
+                update_product_form.image.data.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
+                product.set_image(image_filename)
+
+            db['Products'] = products_dict
+            db.close()
+
+            return redirect(url_for('retrieve_products'))
+
+    # Rest of the code for handling GET request and rendering the form
+    products_dict = {}
+    db = shelve.open('product.db', 'r')
+    products_dict = db['Products']
+    db.close()
+
+    product = products_dict.get(id)
+    if product:
+        update_product_form.name.data = product.get_name()
+        update_product_form.price.data = product.get_price()
+        update_product_form.colour.data = product.get_colour()
+        update_product_form.description.data = product.get_description()
+        update_product_form.image.data = product.get_image()
+
+        return render_template('updateProduct.html', form=update_product_form)
+@app.route('/deleteProduct/<int:id>', methods=['POST'])
+def delete_product(id):
+    products_dict = {}
+    db = shelve.open('product.db', 'w')
+    products_dict = db['Products']
+
+    products_dict.pop(id)
+
+    db['Products'] = products_dict
+    db.close()
+
+    return redirect(url_for('retrieve_products'))
+
+@app.route('/shopnow')
+def shop_now():
+    tf = True
+    products_dict = {}
+    try: 
+        db = shelve.open('product.db', 'r')
+    except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            tf = False
+
+
+    try:
+        products_dict = db['Products']
+    except:
+        print("Error in retrieving Products from product.db.")
+
+    if tf:
+        db.close()
+
+    products_list = []
+    for key in products_dict:
+        product = products_dict.get(key)
+        products_list.append(product)
+
+    return render_template('shopnow.html', count=len(products_list), products_list=products_list)
+
+@app.route('/add_to_cart/<int:id>', methods=['POST'])
+def add_to_cart(id):
+    quantity = int(request.form['quantity'])
+
+    products_dict = {}
+    db = shelve.open('product.db', 'c')  # Open the database in read-write mode
+    products_dict = db['Products']
+
+    product = products_dict.get(id)
+
+    if product:
+        # Initialize the cart in the database if it doesn't exist
+        db.setdefault('cart', {})
+
+        # Add the product to the cart in the database with the chosen quantity
+        cart = db['cart']
+        cart[id] = cart.get(id, 0) + quantity
+        db['cart'] = cart
+
+        db.close()
+
+        return redirect(url_for('shop_now'))
+
+    return "Product not found"
+
+@app.route('/get_cart_quantity')
+def get_cart_quantity_endpoint():
+    return jsonify(get_cart_quantity())
+def get_cart_quantity():
+    db = shelve.open('product.db', 'r')
+    cart = db.get('cart', {})
+    db.close()
+
+    total_quantity = sum(cart.values())
+    return {'quantity': total_quantity}
+
+def get_cart_items():
+    db = shelve.open('product.db', 'r')
+    cart_items = db.get('cart', {})
+    db.close()
+    return cart_items
+
+def get_products_dict():
+    db = shelve.open('product.db', 'c')
+    products_dict = db.get('Products', {})
+    db.close()
+    return products_dict
+
+
+def get_product_count():
+    db = shelve.open('product.db', 'r')
+    count = db.get(Product.count_id_key, 0)
+    db.close()
+    return count
+# Inside __init__.py
+
+# ...
+
+def calculate_total_fee(cart_items, products_dict):
+    total_fee = 0
+
+    for product_id, quantity in cart_items.items():
+        product = products_dict.get(product_id)
+        if product:
+            # Remove the dollar sign from the price and convert to float
+            price = float(product.get_price().replace('$', ''))
+            total_fee += price * quantity
+
+    return total_fee
+
+# ...
+
+# ...
+
+@app.route('/checkout')
+def checkout():
+    # Get cart items and products dictionary using the functions
+    cart_items = get_cart_items()
+    products_dict = get_products_dict()
+
+    # Assuming you have a function to get the product information by ID
+    def get_product_info(product_id):
+        product = products_dict.get(product_id)
+        if product:
+            return {
+                'name': product.get_name(),
+                'price': product.get_price(),
+                'image': product.get_image(),
+                'color': product.get_colour(),  # Corrected the attribute name
+            }
+        return {}
+
+    # Get product information for each item in the cart
+    cart_details = []
+    for product_id, quantity in cart_items.items():
+        product_info = get_product_info(product_id)
+        if product_info:
+            cart_details.append({
+                'id': product_id,
+                'quantity': quantity,
+                **product_info,
+            })
+
+    total_fee = calculate_total_fee(cart_items, products_dict)
+    return render_template('checkout.html', cart_details=cart_details, total_fee=total_fee)
+
+@app.route('/update_cart_item/<int:id>', methods=['POST'])
+def update_cart_item(id):
+    cart_items = get_cart_items()
+
+    # Get the requested quantity to remove
+    quantity_to_remove = int(request.form['quantity'])
+
+    # Remove the product from the cart with the specified quantity
+    if id in cart_items and quantity_to_remove > 0:
+        if quantity_to_remove >= cart_items[id]:
+            # If the requested quantity is greater or equal to the current quantity, remove the product
+            cart_items.pop(id)
+        else:
+            # Otherwise, update the quantity
+            cart_items[id] -= quantity_to_remove
+
+        # Update the cart in the database
+        db = shelve.open('product.db', 'w')
+        db['cart'] = cart_items
+        db.close()
+
+    return redirect(url_for('checkout'))
+
+
+# ... (previous code)
+
+# ... (previous code)
+
+# ... (previous code)
+
+
+# ... (remaining code)
+
+@app.route('/payment', methods=['GET', 'POST'])
+def payment():
+    payment_form = PaymentForm(request.form)
+    if request.method == 'POST' and payment_form.validate():
+        order_dict = {}
+        db = shelve.open('order.db', 'c')
+
+        try:
+            order_dict = db['Order']
+        except KeyError:
+            print("Error in retrieving Orders from order.db.")
+
+        order = Order(
+            payment_form.name.data,
+            payment_form.address.data,
+            payment_form.email.data,
+            payment_form.phone.data,
+            payment_form.card_number.data,
+            payment_form.card_expiry.data,
+            payment_form.cvv.data
+        )
+
+        order_dict[order.get_order_id()] = order
+        db['Order'] = order_dict
+
+        db.close()
+
+        db = shelve.open('product.db', 'w')
+        db['cart'] = {}
+        db.close()
+
+        return redirect(url_for('confirmation'))
+    return render_template('payment.html', form=payment_form)
+
+
+@app.route('/retrieveOrder', methods=['GET', 'POST'])
+def retrieve_orders():
+   order_dict = {}
+   db = shelve.open('order.db', 'r')
+   order_dict = db['Order']
+   db.close()
+
+   order_list = []
+   for key in order_dict:
+       order = order_dict[key]
+       order_list.append(order)
+
+   return render_template('retrieveOrder.html', count=len(order_list), order_list=order_list)
+
+
+#delete order
+@app.route("/deleteOrder/<int:id>", methods=['POST'])
+def delete_order(id):
+    order_dict = {}
+    db = shelve.open('order.db', 'w')
+    users_dict = db['Order']
+    users_dict.pop(id)
+    db['Order'] = users_dict
+    db.close()
+    return redirect(url_for('retrieve_orders'))
+
+@app.route('/confirmation')
+def confirmation():
+    # Include any necessary order details here
+    return render_template('confirmation.html')
+
+
+
+
+# Inside __init__.py
+
+# ... (previous code)
+#----------------------------------------------------------------------------------------------------
+#section for Kenzie part ends here
+
+
 if __name__ == '__main__':
+    db = shelve.open('product.db', 'c')
+    db['cart'] = {}
+    db.close()
     app.run(debug=True)
 

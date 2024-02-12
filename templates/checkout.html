@@ -1,0 +1,65 @@
+<!-- Inside checkout.html -->
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='checkout.css') }}">
+
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <!-- Left card for product details -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h5>Product Details</h5>
+        </div>
+        <div class="card-body">
+          {% if cart_details %}
+            {% for item in cart_details %}
+              <div class="media">
+                <img src="{{ url_for('static', filename=item.image) }}" class="mr-3" alt="Product Image" style="max-width: 80px;">
+                <div class="media-body">
+                  <h6 class="mt-0">{{ item.name }}</h6>
+                  <p>Quantity: {{ item.quantity }}</p>
+                  <p>Price: ${{ item.price }}</p>
+                  <p>Color: {{ item.color }}</p>
+                  <!-- Form for updating quantity and deleting product -->
+                  <form action="{{ url_for('update_cart_item', id=item.id) }}" method="post">
+                    <div class="form-group">
+                      <label for="quantity">Quantity to Remove:</label>
+                      <input type="number" class="form-control" id="quantity" name="quantity" min="1" max="{{ item.quantity }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                  </form>
+                </div>
+              </div>
+              <hr>
+            {% endfor %}
+          {% else %}
+            <p>Your cart is empty. Add items to your cart before proceeding to checkout.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right card for price summary -->
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">
+          <h5>Order Summary</h5>
+        </div>
+        <div class="card-body">
+          {% if cart_details %}
+            <!-- Price summary code here -->
+            <p>Total Items: {{ cart_details|length }}</p>
+            <p>Total Price: ${{ total_fee }}</p>
+            <!-- Add any additional summary information here -->
+
+            <!-- Checkout button -->
+            <a id='checkoutbutton' href="{{ url_for('payment') }}" class="btn btn-primary btn-lg btn-block">Checkout</a>
+          {% else %}
+            <p>Your cart is empty. Add items to your cart before proceeding to checkout.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

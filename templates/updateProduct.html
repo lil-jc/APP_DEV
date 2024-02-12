@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Update Product{% endblock %}
+
+{% block content %}
+{% from "includes/formhelper.html" import render_field %}
+
+<h1 class="display-4">Update Product</h1>
+
+<form method="POST" action="" enctype="multipart/form-data">
+  <div class="form-group">
+    {{ render_field(form.name, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.price, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.colour, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.description, class="form-control") }}
+  </div>
+  <div class="form-group">
+    {{ render_field(form.image, class="form-control") }}
+  </div>
+  <input type="submit" value="Submit" class="btn btn-primary"/>
+</form>
+{% endblock %}
